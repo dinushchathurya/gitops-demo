@@ -9,10 +9,10 @@ pipeline {
             }
         }
 
-        stage('Build image') {
+        stage('Build & Tag Image') {
             steps {
                 script {
-                    sh 'docker build .'
+                    sh 'docker build -t limarktest/nodejs-docker:$BUILD_NUMBER .'
                 }
             }
         }

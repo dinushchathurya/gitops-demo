@@ -21,6 +21,16 @@ pipeline {
             }
         }
 
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                withDockerRegistry([ credentialsId: "dockerhubaccount", url: "" ]) {
+                    script {
+                        sh 'docker push $imageName:$BUILD_NUMBER'
+                    }
+                }
+            }
+        }
+
         stage('Remove Unused Docker Image') {
             steps{
                 sh "docker rmi $imageName:$BUILD_NUMBER"

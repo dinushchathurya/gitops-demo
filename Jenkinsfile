@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout Code') {
             steps {
                checkout scm
@@ -11,7 +12,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    docker build .
+                    sh 'docker build .'
                 }
             }
         }

@@ -23,7 +23,7 @@ pipeline {
 
         stage('Push Docker Image to Docker Hub') {
             steps {
-                withDockerRegistry([ credentialsId: "dockerhubaccount", url: "" ]) {
+                withDockerRegistry([ credentialsId: "DockerHubCredentials", url: "" ]) {
                     script {
                         sh 'docker push $imageName:$BUILD_NUMBER'
                     }

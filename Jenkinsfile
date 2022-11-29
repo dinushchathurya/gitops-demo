@@ -7,6 +7,11 @@ pipeline {
                checkout scm
             }
         }
+
+        stage('Build image') {
+            app = docker.build("limarktest/nodejs-docker")
+        }
+
         stage('Test') {
             steps {
                 echo 'Testing..'

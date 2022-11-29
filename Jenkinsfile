@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Init') {
+        stage('Checkout Code') {
             steps {
-                echo 'Initializing..'
+               checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/dinushchathurya/gitops-demo']]])
             }
         }
         stage('Test') {

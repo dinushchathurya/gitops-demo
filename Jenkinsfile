@@ -11,7 +11,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                   app = docker.build("limarktest/nodejs-docker")
+                   docker build . 
                 }
             }
         }

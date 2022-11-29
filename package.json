@@ -1,0 +1,13 @@
+{
+    "name": "nodejs-hello-world",
+    "version": "1.0.0",
+    "description": "Simple Node.js on Docker",
+    "author": "Dinush Chathurya<dinushchathurya21@gmail.com>",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.17.3"
+    }
+}

@@ -9,7 +9,11 @@ pipeline {
         }
 
         stage('Build image') {
-            app = docker.build("limarktest/nodejs-docker")
+            steps {
+                script {
+                   app = docker.build("limarktest/nodejs-docker")
+                }
+            }
         }
 
         stage('Test') {

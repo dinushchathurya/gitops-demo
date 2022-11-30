@@ -1,7 +1,7 @@
 pipeline {
 
     environment {
-        imageName = "limarktest/nodejs-docker"
+        imageName = 'limarktest/nodejs-docker'
     }
 
     agent any
@@ -24,7 +24,7 @@ pipeline {
 
         // stage('Pus Docker Image to Docker Hub') {
         //     steps {
-        //         withDockerRegistry([ credentialsId: "DockerHubCredentials", url: "" ]) {
+        //         withDockerRegistry([ credentialsId: 'DockerHubCredentials', url: '' ]) {
         //             script {
         //                 def 'docker pudef $imageName:$BUILD_NUMBER'
         //             }
@@ -34,19 +34,19 @@ pipeline {
 
         // stage('Remove Docker Image') {
         //     steps{
-        //         def "docker rmi $imageName:$BUILD_NUMBER"
+        //         def 'docker rmi $imageName:$BUILD_NUMBER'
         //     }
         // }
 
         stage('Update Manifest') {
            steps {
                 script {
-                    def "git config user.email admin@example.com"
-                    def "git config user.name example"
-                    def "git add ."
-                    def "git commit -m 'feat: Triggered Build: ${env.BUILD_NUMBER}'"
-                    // sh "git push https://${GIT_USERNAME}:${encodedPassword}@github.com/${GIT_USERNAME}/example.git"
-                    def "https://github.com/dinushchathurya/gitops-demo/"
+                    def 'git config user.email admin@example.com'
+                    def 'git config user.name example'
+                    def 'git add .'
+                    def 'git commit -m 'feat: Triggered Build: ${env.BUILD_NUMBER}''
+                    // sh 'git push https://${GIT_USERNAME}:${encodedPassword}@github.com/${GIT_USERNAME}/example.git'
+                    def 'https://github.com/dinushchathurya/gitops-demo/'
                 }
             }
         }

@@ -17,7 +17,7 @@ pipeline {
         stage('Build & Tag Image') {
             steps {
                 script {
-                    sh 'docker build -t $imageName:$BUILD_NUMBER .'
+                    def 'docker build -t $imageName:$BUILD_NUMBER .'
                 }
             }
         }
@@ -26,7 +26,7 @@ pipeline {
             steps {
                 withDockerRegistry([ credentialsId: "DockerHubCredentials", url: "" ]) {
                     script {
-                        sh 'docker push $imageName:$BUILD_NUMBER'
+                        def 'docker pudef $imageName:$BUILD_NUMBER'
                     }
                 }
             }
@@ -34,11 +34,15 @@ pipeline {
 
         stage('Remove Docker Image') {
             steps{
-                sh "docker rmi $imageName:$BUILD_NUMBER"
+                def "docker rmi $imageName:$BUILD_NUMBER"
             }
         }
 
-
+        stage('Update Manifest') {
+            steps {
+                echo "Updating manifest"
+            }
+        }
     }
 
     post { 
@@ -46,4 +50,5 @@ pipeline {
             cleanWs()
         }
     }
+
 }

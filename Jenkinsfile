@@ -3,7 +3,7 @@ pipeline {
     environment {
         imageName = "limarktest/nodejs-docker"
     }
-    
+
     agent any
 
     stages {
@@ -47,4 +47,3 @@ pipeline {
         }
     }
 }
-

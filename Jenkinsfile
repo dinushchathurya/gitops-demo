@@ -39,7 +39,7 @@ pipeline {
         // }
 
         stage('Update Manifest') {
-           steps {
+            steps {
                 script {
                     def 'git config user.email admin@example.com'
                 }
@@ -52,5 +52,5 @@ pipeline {
             cleanWs()
         }
     }
-    
+
 }

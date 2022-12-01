@@ -17,7 +17,7 @@ pipeline {
         stage('Build & Tag Image') {
             steps {
                 script {
-                    def 'docker build -t $imageName:$BUILD_NUMBER .'
+                    sh 'docker build -t $imageName:$BUILD_NUMBER .'
                 }
             }
         }

@@ -41,7 +41,7 @@ pipeline {
         stage('Update Manifest') {
             steps {
                 script {
-                    def 'git config user.email admin@example.com'
+                    git config user.email admin@example.com
                 }
             }
         }

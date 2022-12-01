@@ -58,7 +58,7 @@ pipeline {
                         git config user.name "build"
                         git add . 
                         git commit -m "Update app image tag to ${BUILD_NUMBER}"
-                        git push https://github.com/dinushchathurya/gitops-demo-deployment.git
+                        git push https://github.com/dinushchathurya/gitops-demo-deployment.git HEAD:master --force
                     '''
                 }
             }

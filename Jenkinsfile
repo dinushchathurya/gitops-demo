@@ -1,14 +1,15 @@
 pipeline {
 
     environment {
-        imagename = 'limarktest/nodejs-docker'
+        imagerepo = 'limarktest'
+        imagename = 'nodejs-docker'
     }
 
     agent any
 
     stages {
 
-        stage('Build & Tag Image') {
+        stage('Build Docker Image') {
             steps {
                 script {
                     bat "docker build --no-cache . -t nodejs-docker:${BUILD_NUMBER}"
@@ -16,11 +17,19 @@ pipeline {
             }
         }
 
-        stage('Pus Docker Image to Docker Hub') {
+        stage('Tag Docker Image') {
+            steps {
+                script {
+                    bat "docker tag nodejs-docker:${BUILD_NUMBER} ${imagerepo}/${imagename}:${BUILD_NUMBER}"
+                }
+            }
+        }
+
+        stage('Push Docker Image to Docker Hub') {
             steps {
                 withDockerRegistry([ credentialsId: 'DockerHubCredentials', url: '' ]) {
                     script {
-                        bat 'docker push $imagename:${BUILD_NUMBER}'
+                        bat 'docker push ${imagerepo}/${imagename}:${BUILD_NUMBER}'
                     }
                 }
             }

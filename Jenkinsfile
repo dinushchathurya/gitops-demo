@@ -11,7 +11,7 @@ pipeline {
         stage('Build & Tag Image') {
             steps {
                 script {
-                    bat "docker build --no-cache . -t $imagename:${BUILD_NUMBER}"
+                    bat "docker build --no-cache . -t nodejs-docker:${BUILD_NUMBER}"
                 }
             }
         }

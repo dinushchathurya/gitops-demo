@@ -38,13 +38,13 @@ pipeline {
         //     }
         // }
 
-        stage('Update Manifest') {
-            steps {
-                script {
-                    git config user.email admin@example.com
-                }
-            }
-        }
+        // stage('Update Manifest') {
+        //     steps {
+        //         script {
+        //             git config user.email admin@example.com
+        //         }
+        //     }
+        // }
     }
 
     post { 

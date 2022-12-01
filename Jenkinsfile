@@ -14,13 +14,13 @@ pipeline {
             }
         }
 
-        stage('Build & Tag Image') {
-            steps {
-                script {
-                    bat 'docker build -t $imageName:$BUILD_NUMBER .'
-                }
-            }
-        }
+        // stage('Build & Tag Image') {
+        //     steps {
+        //         script {
+        //             bat 'docker build -t $imageName:$BUILD_NUMBER .'
+        //         }
+        //     }
+        // }
 
         // stage('Pus Docker Image to Docker Hub') {
         //     steps {
@@ -38,13 +38,13 @@ pipeline {
         //     }
         // }
 
-        // stage('Update Manifest') {
-        //     steps {
-        //         script {
-        //             git config user.email admin@example.com
-        //         }
-        //     }
-        // }
+        stage('Update Manifest') {
+            steps {
+                script {
+                    bat 'git config user.email admin@example.com'
+                }
+            }
+        }
     }
 
     post { 

@@ -17,7 +17,7 @@ pipeline {
         stage('Build & Tag Image') {
             steps {
                 script {
-                    sh 'docker build -t $imageName:$BUILD_NUMBER .'
+                    bat 'docker build -t $imageName:$BUILD_NUMBER .'
                 }
             }
         }

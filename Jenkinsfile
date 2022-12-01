@@ -42,22 +42,17 @@ pipeline {
             }
         }
 
-        // stage('Update Manifest') {
-        //     steps {
-        //         script {
-        //             bat "git config user.email admin@example.com"
-        //             bat "git config user.name example"
-        //             bat "git add ."
-        //             bat "git commit -m 'Triggered Build: ${BUILD_NUMBER}'"
-        //             bat "git push https://github.com/dinushchathurya/gitops-demo.git"
-        //         }
-        //     }
-        // }
-    }
-
-    post { 
-        always { 
-            cleanWs()
+        stage('Update Manifest') {
+            steps {
+                script {
+                    bat "sed -i 's|\$limarktest/nodejs-docker:latest | ${imagerepo}/${imagename}:${BUILD_NUMBER}|g' deployment.yml"
+                    bat "git config user.email admin@example.com"
+                    bat "git config user.name example"
+                    bat "git add ."
+                    bat "git commit -m 'Triggered Build: ${BUILD_NUMBER}'"
+                    bat "git push https://github.com/dinushchathurya/gitops-demo-deployment.git"
+                }
+            }
         }
     }
 

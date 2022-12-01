@@ -45,6 +45,7 @@ pipeline {
         stage('Update Manifest') {
             steps {
                 script {
+                    sh "git clone  https://github.com/dinushchathurya/gitops-demo-deployment.git"
                     sh "sed -i 's|\$limarktest/nodejs-docker:latest | ${imagerepo}/${imagename}:${BUILD_NUMBER}|g' deployment.yml"
                     sh "git config user.email admin@example.com"
                     sh "git config user.name example"

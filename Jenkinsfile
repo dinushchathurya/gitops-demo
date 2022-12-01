@@ -12,7 +12,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    bat "docker build --no-cache . -t nodejs-docker:${BUILD_NUMBER}"
+                    bat "docker build --no-cache . -t ${imagename}:${BUILD_NUMBER}"
                 }
             }
         }
@@ -29,7 +29,7 @@ pipeline {
             steps {
                 withDockerRegistry([ credentialsId: 'DockerHubCredentials', url: '' ]) {
                     script {
-                        bat 'docker push ${imagerepo}/${imagename}:${BUILD_NUMBER}'
+                        bat "docker push ${imagerepo}/${imagename}:${BUILD_NUMBER}"
                     }
                 }
             }
@@ -37,18 +37,19 @@ pipeline {
 
         stage('Remove Docker Image') {
             steps{
-                bat 'docker rmi $imagename:${BUILD_NUMBER}'
+                bat "docker rmi ${imagename}:${BUILD_NUMBER}"
+                bat "docker rmi ${imagerepo}/${imagename}:${BUILD_NUMBER}"
             }
         }
 
         stage('Update Manifest') {
             steps {
                 script {
-                    bat 'git config user.email admin@example.com'
-                    bat 'git config user.name example'
-                    bat 'git add .'
-                    bat 'git commit -m 'Triggered Build: ${env.BUILD_NUMBER}''
-                    bat 'git push https://github.com/dinushchathurya/gitops-demo.git'
+                    bat "git config user.email admin@example.com"
+                    bat "git config user.name example"
+                    bat "git add ."
+                    bat "git commit -m 'Triggered Build: ${BUILD_NUMBER}'"
+                    bat "git push https://github.com/dinushchathurya/gitops-demo.git"
                 }
             }
         }

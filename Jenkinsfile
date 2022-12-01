@@ -14,13 +14,13 @@ pipeline {
             }
         }
 
-        // stage('Build & Tag Image') {
-        //     steps {
-        //         script {
-        //             def 'docker build -t $imageName:$BUILD_NUMBER .'
-        //         }
-        //     }
-        // }
+        stage('Build & Tag Image') {
+            steps {
+                script {
+                    def 'docker build -t $imageName:$BUILD_NUMBER .'
+                }
+            }
+        }
 
         // stage('Pus Docker Image to Docker Hub') {
         //     steps {

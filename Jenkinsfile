@@ -1,7 +1,8 @@
 pipeline {
 
     environment {
-        imagename = 'limarktest/nodejs-docker'
+        imagerepo = 'limarktest'
+        imagename = 'nodejs-docker'
         imagetag  =  "$imagetag"
     }
 
@@ -9,10 +10,18 @@ pipeline {
 
     stages {
 
-        stage('Build & Tag Image') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    bat 'docker build -t $imagename:$imagetag .'
+                    bat 'docker build -t ${imagename} .'
+                }
+            }
+        }
+        
+        stage('Tag Docker Image') {
+            steps {
+                script {
+                    bat 'docker tag ${imagename}:latest ${imagerepo}/${imagename}:${imagetag}'
                 }
             }
         }
@@ -21,7 +30,7 @@ pipeline {
             steps {
                 withDockerRegistry([ credentialsId: 'DockerHubCredentials', url: '' ]) {
                     script {
-                        bat 'docker pudef $imagename:$imagetag'
+                        bat 'docker push $imagename:$imagetag'
                     }
                 }
             }

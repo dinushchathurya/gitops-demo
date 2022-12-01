@@ -42,17 +42,17 @@ pipeline {
             }
         }
 
-        stage('Update Manifest') {
-            steps {
-                script {
-                    bat "git config user.email admin@example.com"
-                    bat "git config user.name example"
-                    bat "git add ."
-                    bat "git commit -m 'Triggered Build: ${BUILD_NUMBER}'"
-                    bat "git push https://github.com/dinushchathurya/gitops-demo.git"
-                }
-            }
-        }
+        // stage('Update Manifest') {
+        //     steps {
+        //         script {
+        //             bat "git config user.email admin@example.com"
+        //             bat "git config user.name example"
+        //             bat "git add ."
+        //             bat "git commit -m 'Triggered Build: ${BUILD_NUMBER}'"
+        //             bat "git push https://github.com/dinushchathurya/gitops-demo.git"
+        //         }
+        //     }
+        // }
     }
 
     post { 

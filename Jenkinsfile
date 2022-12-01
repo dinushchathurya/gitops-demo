@@ -54,13 +54,11 @@ pipeline {
                 // }
                 script { 
                     bat '''
-                        git clone https://github.com/dinushchathurya/gitops-demo-deployment.git
-                        cd gitops-demo-deployment
-                        def text = readFile file: "deployment.yaml"
-                        text = text.replaceAll("%image%", "${${imagerepo}/${imagename}:${BUILD_NUMBER}") 
-                        export BUILD_NUMBER=${BUILD_NUMBER}
-                        git add . -m "Update app image tag to ${BUILD_NUMBER}"
-                        git push origin master
+                        git config user.email "build@gmail.com"
+                        git config user.name "build"
+                        git add . 
+                        git commit -m "Update app image tag to ${BUILD_NUMBER}"
+                        git push https://github.com/dinushchathurya/gitops-demo-deployment.git
                     '''
                 }
             }

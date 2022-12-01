@@ -1,27 +1,17 @@
 pipeline {
 
     environment {
-        imagerepo = 'limarktest'
-        imagename = 'nodejs-docker'
-        imagetag  =  "$imagetag"
+        imagename = 'limarktest/nodejs-docker'
     }
 
     agent any
 
     stages {
 
-        stage('Build Docker Image') {
+        stage('Build & Tag Image') {
             steps {
                 script {
-                    bat 'docker build -t ${imagename} .'
-                }
-            }
-        }
-        
-        stage('Tag Docker Image') {
-            steps {
-                script {
-                    bat 'docker tag ${imagename}:latest ${imagerepo}/${imagename}:${imagetag}'
+                    bat "docker build --no-cache . -t $imagename:${BUILD_NUMBER}"
                 }
             }
         }
@@ -30,7 +20,7 @@ pipeline {
             steps {
                 withDockerRegistry([ credentialsId: 'DockerHubCredentials', url: '' ]) {
                     script {
-                        bat 'docker push $imagename:$imagetag'
+                        bat 'docker push $imagename:${BUILD_NUMBER}'
                     }
                 }
             }
@@ -38,7 +28,7 @@ pipeline {
 
         stage('Remove Docker Image') {
             steps{
-                bat 'docker rmi $imagename:$imagetag'
+                bat 'docker rmi $imagename:${BUILD_NUMBER}'
             }
         }
 
@@ -48,7 +38,7 @@ pipeline {
                     bat 'git config user.email admin@example.com'
                     bat 'git config user.name example'
                     bat 'git add .'
-                    bat 'git commit -m 'Triggered Build: $imagetag''
+                    bat 'git commit -m 'Triggered Build: ${env.BUILD_NUMBER}''
                     bat 'git push https://github.com/dinushchathurya/gitops-demo.git'
                 }
             }

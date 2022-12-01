@@ -2,6 +2,7 @@ pipeline {
 
     environment {
         imagename = 'limarktest/nodejs-docker'
+        imagetag  =  "$imagetag"
     }
 
     agent any
@@ -11,7 +12,7 @@ pipeline {
         stage('Build & Tag Image') {
             steps {
                 script {
-                    bat 'docker build -t $imagename:${env.BUILD_NUMBER} .'
+                    bat 'docker build -t $imagename:$imagetag .'
                 }
             }
         }
@@ -20,7 +21,7 @@ pipeline {
             steps {
                 withDockerRegistry([ credentialsId: 'DockerHubCredentials', url: '' ]) {
                     script {
-                        bat 'docker pudef $imagename:${env.BUILD_NUMBER}'
+                        bat 'docker pudef $imagename:$imagetag'
                     }
                 }
             }
@@ -28,7 +29,7 @@ pipeline {
 
         stage('Remove Docker Image') {
             steps{
-                bat 'docker rmi $imagename:${env.BUILD_NUMBER}'
+                bat 'docker rmi $imagename:$imagetag'
             }
         }
 
@@ -38,7 +39,7 @@ pipeline {
                     bat 'git config user.email admin@example.com'
                     bat 'git config user.name example'
                     bat 'git add .'
-                    bat 'git commit -m 'Triggered Build: ${env.BUILD_NUMBER}''
+                    bat 'git commit -m 'Triggered Build: $imagetag''
                     bat 'git push https://github.com/dinushchathurya/gitops-demo.git'
                 }
             }

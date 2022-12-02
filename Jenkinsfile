@@ -55,7 +55,7 @@ pipeline {
 	sh "cd gitops-demo-deployment"
 	dir('gitops-demo-deployment') {
 	sh "cat deployment.yaml"
-	sh "sed -i '/nodejs-docker/c :${BUILD_NUMBER}' deployment.yaml"
+	sh "sed -i 's/nodejs-docker.*/nodejs-docker:${BUILD_NUMBER}' deployment.yaml"
 	sh "git config user.email ci@dinush.com"
 
 	sh "git config user.name devops-bot"

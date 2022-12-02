@@ -1,70 +1,96 @@
+
 pipeline {
+	
+	environment {
+	imagerepo = 'limarktest'
+	imagename = 'nodejs-docker'
+	}
+	
+	agent any
+	
+	stages {
+	
+	stage('Build Docker Image') {
+	steps {
+	script {
+	sh "docker build --no-cache . -t ${imagename}:${BUILD_NUMBER}"
+	}
+	}
+	}
+	
+	stage('Tag Docker Image') {
+	steps {
+	script {
+	sh "docker tag nodejs-docker:${BUILD_NUMBER} ${imagerepo}/${imagename}:${BUILD_NUMBER}"
+	}
+	}
+	}
+	
+	stage('Push Docker Image to Docker Hub') {
+	steps {
+	withDockerRegistry([ credentialsId: 'DockerHubCredentials', url: '' ]) {
+	script {
+	sh "docker push ${imagerepo}/${imagename}:${BUILD_NUMBER}"
+	}
+	}
+	}
+	}
+	
+	stage('Remove Docker Image') {
+	steps{
+	sh "docker rmi ${imagename}:${BUILD_NUMBER}"
+	sh "docker rmi ${imagerepo}/${imagename}:${BUILD_NUMBER}"
+	}
+	}
+	
+	stage('Update Manifest') {
+	steps {
+	script {
+	
+	withCredentials([usernamePassword(credentialsId: 'GitHubCredentials', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+	sh "rm -rf .git"
+	sh "rm -rf gitops-demo-deployment"
+	sh "git clone https://github.com/dinushchathurya/gitops-demo-deployment.git"
 
-    environment {
-        imagerepo = 'limarktest'
-        imagename = 'nodejs-docker'
-    }
+	sh "cd gitops-demo-deployment"
+	dir('gitops-demo-deployment') {
+	sh "cat deployment.yaml"
+	sh "sed '/limarktest/c limarktest/nodejs-docker:${BUILD_NUMBER}' deployment.yaml"
+	// sh "sed -i 's/limarktest/nodejs-docker/${imagerepo}/${imagename}:${BUILD_NUMBER}/g' deployment.yaml"
+	// sh "sed -E 's/^(image[[:blank:]]*=[[:blank:]]*).*/\${imagerepo}/${imagename}:${BUILD_NUMBER}/' deployment.yaml"
+	
+	// sh "sed -i -e '/image=/ s/= .*/= ${imagerepo}/${imagename}:${BUILD_NUMBER}/' deployment.yaml "
+	// sh "sed -i 's/latest/${BUILD_NUMBER}/g' deployment.yaml"
+	sh "cat deployment.yaml"
+	sh "git config user.email ci@dinush.com"
 
-    agent any
+	sh "git config user.name devops-bot"
 
-    stages {
+	sh "git add ${WORKSPACE}/gitops-demo-deployment/deployment.yaml"
+	sh "git commit -m 'Update image version to: ${BUILD_NUMBER}'"
+	sh"git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/dinushchathurya/gitops-demo-deployment.git HEAD:master -f"
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh "docker build --no-cache . -t ${imagename}:${BUILD_NUMBER}"
-                }
-            }
-        }
+	}
+	}
+	
+	
+	}
+	// script { 
+	// bat '''
+	// git config user.email "build@gmail.com"
 
-        stage('Tag Docker Image') {
-            steps {
-                script {
-                    sh "docker tag nodejs-docker:${BUILD_NUMBER} ${imagerepo}/${imagename}:${BUILD_NUMBER}"
-                }
-            }
-        }
+	// git config user.name "build"
 
-        stage('Push Docker Image to Docker Hub') {
-            steps {
-                withDockerRegistry([ credentialsId: 'DockerHubCredentials', url: '' ]) {
-                    script {
-                        sh "docker push ${imagerepo}/${imagename}:${BUILD_NUMBER}"
-                    }
-                }
-            }
-        }
+	// git add . 
+	// git commit -m "Update app image tag to ${BUILD_NUMBER}"
+	// git remote set-url origin https://github.com/dinushchathurya/gitops-demo-deployment.git
 
-        stage('Remove Docker Image') {
-            steps{
-                sh "docker rmi ${imagename}:${BUILD_NUMBER}"
-                sh "docker rmi ${imagerepo}/${imagename}:${BUILD_NUMBER}"
-            }
-        }
+	// git push HEAD:master --force
+	// '''
+	// }
+	}
+	}
+	}
+	
+	}
 
-        stage('Update Manifest') {
-            steps {
-                script {
-                    sh "git clone  https://github.com/dinushchathurya/gitops-demo-deployment.git"
-                    sh "sed -i 's|\$limarktest/nodejs-docker:latest | ${imagerepo}/${imagename}:${BUILD_NUMBER}|g' deployment.yml"
-                    sh "git config user.email admin@example.com"
-                    sh "git config user.name example"
-                    sh "git add ."
-                    sh "git commit -m 'Triggered Build: ${BUILD_NUMBER}'"
-                    sh "git push https://github.com/dinushchathurya/gitops-demo-deployment.git"
-                }
-                // script { 
-                //     bat '''
-                //         git config user.email "build@gmail.com"
-                //         git config user.name "build"
-                //         git add . 
-                //         git commit -m "Update app image tag to ${BUILD_NUMBER}"
-                //         git remote set-url origin https://github.com/dinushchathurya/gitops-demo-deployment.git
-                //         git push HEAD:master --force
-                //     '''
-                // }
-            }
-        }
-    }
-
-}

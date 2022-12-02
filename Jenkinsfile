@@ -69,19 +69,7 @@ pipeline {
 	
 	
 	}
-	// script { 
-	// bat '''
-	// git config user.email "build@gmail.com"
 
-	// git config user.name "build"
-
-	// git add . 
-	// git commit -m "Update app image tag to ${BUILD_NUMBER}"
-	// git remote set-url origin https://github.com/dinushchathurya/gitops-demo-deployment.git
-
-	// git push HEAD:master --force
-	// '''
-	// }
 	}
 	}
 	}

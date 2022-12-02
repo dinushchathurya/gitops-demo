@@ -8,44 +8,44 @@ pipeline {
 	agent any
 	
 	stages {
-	
-	stage('Build Docker Image') {
-    steps {
-      script {
-        sh "docker build --no-cache . -t ${imagename}:${BUILD_NUMBER}"
-      }
-    }
-	}
-	
-	stage('Tag Docker Image') {
-    steps {
-      script {
-        sh "docker tag nodejs-docker:${BUILD_NUMBER} ${imagerepo}/${imagename}:${BUILD_NUMBER}"
-      }
-    }
-	}
-	
-	stage('Push Docker Image to Docker Hub') {
-    steps {
-      withDockerRegistry([ credentialsId: 'DockerHubCredentials', url: '' ]) {
+
+    stage('Build Docker Image') {
+      steps {
         script {
-          sh "docker push ${imagerepo}/${imagename}:${BUILD_NUMBER}"
+          sh "docker build --no-cache . -t ${imagename}:${BUILD_NUMBER}"
         }
       }
     }
-	}
-	
-	stage('Remove Docker Image') {
-    steps{
-      sh "docker rmi ${imagename}:${BUILD_NUMBER}"
-      sh "docker rmi ${imagerepo}/${imagename}:${BUILD_NUMBER}"
+    
+    stage('Tag Docker Image') {
+      steps {
+        script {
+          sh "docker tag nodejs-docker:${BUILD_NUMBER} ${imagerepo}/${imagename}:${BUILD_NUMBER}"
+        }
+      }
     }
-	}
-	
-	stage('Update Manifest') {
-    steps {
-      script {
-        withCredentials([usernamePassword(credentialsId: 'GitHubCredentials', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+    
+    stage('Push Docker Image to Docker Hub') {
+      steps {
+        withDockerRegistry([ credentialsId: 'DockerHubCredentials', url: '' ]) {
+          script {
+            sh "docker push ${imagerepo}/${imagename}:${BUILD_NUMBER}"
+          }
+        }
+      }
+    }
+    
+    stage('Remove Docker Image') {
+      steps{
+        sh "docker rmi ${imagename}:${BUILD_NUMBER}"
+        sh "docker rmi ${imagerepo}/${imagename}:${BUILD_NUMBER}"
+      }
+    }
+    
+    stage('Update Manifest') {
+      steps {
+        script {
+          withCredentials([usernamePassword(credentialsId: 'GitHubCredentials', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
             dir('gitops-demo-deployment') {
               sh "rm -rf gitops-demo-deployment"
               sh "git clone https://github.com/dinushchathurya/gitops-demo-deployment.git"
@@ -62,6 +62,7 @@ pipeline {
         }
       }
     }  
+    
 	}
 
   post { 

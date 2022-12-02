@@ -55,13 +55,7 @@ pipeline {
 	sh "cd gitops-demo-deployment"
 	dir('gitops-demo-deployment') {
 	sh "cat deployment.yaml"
-	sh "sed '/limarktest/c limarktest/nodejs-docker:${BUILD_NUMBER}' deployment.yaml"
-	// sh "sed -i 's/limarktest/nodejs-docker/${imagerepo}/${imagename}:${BUILD_NUMBER}/g' deployment.yaml"
-	// sh "sed -E 's/^(image[[:blank:]]*=[[:blank:]]*).*/\${imagerepo}/${imagename}:${BUILD_NUMBER}/' deployment.yaml"
-	
-	// sh "sed -i -e '/image=/ s/= .*/= ${imagerepo}/${imagename}:${BUILD_NUMBER}/' deployment.yaml "
-	// sh "sed -i 's/latest/${BUILD_NUMBER}/g' deployment.yaml"
-	sh "cat deployment.yaml"
+	sh "sed -i '/nodejs-docker/c :${BUILD_NUMBER}' deployment.yaml"
 	sh "git config user.email ci@dinush.com"
 
 	sh "git config user.name devops-bot"

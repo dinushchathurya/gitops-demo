@@ -46,6 +46,8 @@ pipeline {
     steps {
       script {
         withCredentials([usernamePassword(credentialsId: 'GitHubCredentials', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            // sh "rm -rf .git"
+            sh "rm -rf gitops-demo-deployment"
             sh "git clone https://github.com/dinushchathurya/gitops-demo-deployment.git"
             sh "cd gitops-demo-deployment"
             dir('gitops-demo-deployment') {

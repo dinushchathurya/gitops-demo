@@ -46,9 +46,10 @@ pipeline {
       steps {
         script {
           withCredentials([usernamePassword(credentialsId: 'GitHubCredentials', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-            // dir('gitops-demo-deployment') {
               sh "rm -rf gitops-demo-deployment"
               sh "git clone https://github.com/dinushchathurya/gitops-demo-deployment.git"
+            dir('gitops-demo-deployment') {
+            
               sh "cd gitops-demo-deployment"
               sh "ls"
               sh "cat deployment.yaml"
@@ -58,7 +59,7 @@ pipeline {
               sh "git add ${WORKSPACE}/gitops-demo-deployment/deployment.yaml"
               sh "git commit -m 'Update image version to: ${BUILD_NUMBER}'"
               sh"git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/dinushchathurya/gitops-demo-deployment.git HEAD:master -f"
-            // }
+            }
           }
         }
       }

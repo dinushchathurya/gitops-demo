@@ -50,6 +50,7 @@ pipeline {
               sh "rm -rf gitops-demo-deployment"
               sh "git clone https://github.com/dinushchathurya/gitops-demo-deployment.git"
               sh "cd gitops-demo-deployment"
+              sh "ls"
               sh "cat deployment.yaml"
               sh "sed -i 's/nodejs-docker.*/nodejs-docker:${BUILD_NUMBER}/g' deployment.yaml"
               sh "git config user.email ci@dinush.com"

@@ -47,7 +47,7 @@ pipeline {
       script {
         withCredentials([usernamePassword(credentialsId: 'GitHubCredentials', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
             sh "git clone https://github.com/dinushchathurya/gitops-demo-deployment.git"
-            // sh "cd gitops-demo-deployment"
+            sh "cd gitops-demo-deployment"
             dir('gitops-demo-deployment') {
               sh "cat deployment.yaml"
               sh "sed -i 's/nodejs-docker.*/nodejs-docker:${BUILD_NUMBER}/g' deployment.yaml"

@@ -51,7 +51,7 @@ pipeline {
             sh "cd gitops-demo-deployment"
             dir('gitops-demo-deployment') {
               sh "ls"
-              sh "cp kustomize/overlays/*kustomizatiom.yaml"
+              sh "cp kustomize/overlays"
               // sh "cat deployment.yaml"
               // sh "sed -i 's/nodejs-docker.*/nodejs-docker:${BUILD_NUMBER}/g' deployment.yaml"
               sh "sed -i 's/IMAGE_TAG/${BUILD_NUMBER}/g' *kustomization.yaml"

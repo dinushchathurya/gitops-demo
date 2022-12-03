@@ -49,17 +49,17 @@ pipeline {
             sh "rm -rf gitops-demo-deployment"
             sh "git clone https://github.com/dinushchathurya/gitops-demo-deployment.git"
             sh "cd gitops-demo-deployment"
-            // dir('gitops-demo-deployment') {
+            dir('gitops-demo-deployment') {
               // sh "cat deployment.yaml"
               // sh "sed -i 's/nodejs-docker.*/nodejs-docker:${BUILD_NUMBER}/g' deployment.yaml"
-              // sh "git config user.email ci@dinush.com"
-              // sh "git config user.name devops-bot"
-              // sh "git add ${WORKSPACE}/gitops-demo-deployment/deployment.yaml"
-              // sh "git commit -m 'Update image version to: ${BUILD_NUMBER}'"
-              // sh"git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/dinushchathurya/gitops-demo-deployment.git HEAD:master -f"
               sh "ls"
               sh "sed -i 's/IMAGE_TAG/${BUILD_NUMBER}/g' kustomize/overlays/*/*kustomization.yaml"
-            // }
+              sh "git config user.email ci@dinush.com"
+              sh "git config user.name devops-bot"
+              sh "git add ${WORKSPACE}/gitops-demo-deployment/deployment.yaml"
+              sh "git commit -m 'Update image version to: ${BUILD_NUMBER}'"
+              sh"git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/dinushchathurya/gitops-demo-deployment.git HEAD:master -f"
+            }
           }
         }
       }

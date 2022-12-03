@@ -58,7 +58,7 @@ pipeline {
               // sh "git commit -m 'Update image version to: ${BUILD_NUMBER}'"
               // sh"git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/dinushchathurya/gitops-demo-deployment.git HEAD:master -f"
               sh "ls"
-              sh "sed -i 's/IMAGE_TAG/${BUILD_NUMBER}/g' kustomize/overlays/*yaml"
+              sh "sed -i 's/IMAGE_TAG/${BUILD_NUMBER}/g' kustomize/overlays/*.yaml"
             }
           }
         }

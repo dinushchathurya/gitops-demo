@@ -50,9 +50,10 @@ pipeline {
             sh "git clone https://github.com/dinushchathurya/gitops-demo-deployment.git"
             sh "cd gitops-demo-deployment"
             dir('gitops-demo-deployment') {
+              sh "ls"
               // sh "cat deployment.yaml"
               // sh "sed -i 's/nodejs-docker.*/nodejs-docker:${BUILD_NUMBER}/g' deployment.yaml"
-              sh "sed -i 's/newTag/${BUILD_NUMBER}/g' kustomization.yaml"
+              sh "sed -i 's/IMAGE_TAG/${BUILD_NUMBER}/g' kustomization.yaml"
               sh "git config user.email ci@dinush.com"
               sh "git config user.name devops-bot"
             //   sh "git add ${WORKSPACE}/gitops-demo-deployment/deployment.yaml"

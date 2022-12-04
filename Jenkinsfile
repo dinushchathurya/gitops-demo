@@ -54,6 +54,7 @@ pipeline {
               // sh "sed -i 's/nodejs-docker.*/nodejs-docker:${BUILD_NUMBER}/g' deployment.yaml"
               sh "ls"
               sh "sed -i 's/newTag.*/newTag: ${BUILD_NUMBER}/g' kustomize/overlays/*/*kustomization.yaml"
+              sh "sed 's/^/'/;s/$/'/' kustomize/overlays/*/*kustomization.yaml"
               sh "cat kustomize/overlays/dev/kustomization.yaml"
               sh "cat kustomize/overlays/prod/kustomization.yaml"
               sh "git config user.email ci@dinush.com"

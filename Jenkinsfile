@@ -29,7 +29,7 @@ pipeline {
       steps {
         withDockerRegistry([ credentialsId: 'DockerHubCredentials', url: '' ]) {
           script {
-            sh "docker push ${imagerepo}/${imagename}:${BUILD_NUMBER}"
+            sh "docker push ${imagerepo}/${imagename}:v${BUILD_NUMBER}"
           }
         }
       }

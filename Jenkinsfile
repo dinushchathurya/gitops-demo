@@ -37,8 +37,8 @@ pipeline {
     
     stage('Remove Docker Image') {
       steps{
-        sh "docker rmi ${imagename}:${BUILD_NUMBER}"
-        sh "docker rmi ${imagerepo}/${imagename}:${BUILD_NUMBER}"
+        sh "docker rmi ${imagename}:v${BUILD_NUMBER}"
+        sh "docker rmi ${imagerepo}/${imagename}:v${BUILD_NUMBER}"
       }
     }
     
